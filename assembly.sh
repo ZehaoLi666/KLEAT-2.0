@@ -1,10 +1,10 @@
 #!/bin/bash  -l
 
 #SBATCH --nodes=1
-#SBATCH --array=1-2        #depends on how mang files you are going to conduct
+#SBATCH --array=1-16        #depends on how mang files you are going to conduct
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=100G
-#SBATCH --time=7-00:15:00
+#SBATCH --time=10-00:15:00
 #SBATCH --mail-user=zli529@ucr.edu
 #SBATCH --mail-type=ALL
 #SBATCH --job-name="pre_KLEAT"
