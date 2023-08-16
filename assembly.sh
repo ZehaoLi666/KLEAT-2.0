@@ -41,27 +41,29 @@ for sample in "$input_dir"/*R2*;do
     read2+=("$samplename")
 done
 
-# set up output dir
-out_dir="/bigdata/lerochlab/zli529/cleavage/KLEAT-2.0/All_samples/$pre_name/assembly/K32"
-mkdir -p "$out_dir"
 
-#readexample=$(zcat "$input_dir/$read1" | head | tail -1`)
-#readlen=${$readexample}
+index=$(expr $SLURM_ARRAY_TASK_ID - 1 )
+input_R1=${read1[$index]}
+input_R2=${read2[$index]}
+name=${prename[$index]}
+
+echo "Creating $name k32 assembly"
+
+echo "$index"
+echo "$input_R1"
+echo "$input_R2"
+echo "$name"
+
+# set up output dir
+out_dir="/bigdata/lerochlab/zli529/cleavage/KLEAT-2.0/All_samples/$name/assembly/K32"
+
+echo "$out_dir"
+mkdir -p "$out_dir"
 
 stdo="$out_dir"/32.ta.std.o
 stde="$out_dir"/32.ta.std.e
 touch "$stdo"
 touch "$stde"
 
-echo "Creating $prename k32 assembly"
-
-index=$(expr $SLURM_ARRAY_TASK_ID)
-input_R1=${read1[$index]}
-input_R2=${read2[$index]}
-name=${prename[$index]}
-
-
-
-time python ~/lab/cleavage/KLEAT-2.0/transabyss/transabyss --SS --kmer 32 --pe "$input_dir/$input_R1" "$input_dir/$input_R2" --outdir "$out_dir" --name "$name" --thread "20" > "$stdo" 2> "$stde"
-
+time python ~/lab/cleavage/KLEAT-2.0/transabyss/transabyss --SS --kmer 32 --pe "$input_dir/$input_R1" "$input_dir/$input_R2" --outdir "$out_dir" --name "$name" --thread "40" > "$stdo" 2> "$stde"
 
